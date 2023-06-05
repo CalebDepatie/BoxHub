@@ -1,0 +1,16 @@
+name "boxhub"
+description "A GUI abstraction for linux subsytem managers"
+authors "CalebDepatie"
+copyright "Copyright © 2023, CalebDepatie"
+license "MIT"
+
+dependency "gtk-d" version="~>3.10.0"
+
+sourcePaths "src"
+importPaths "src"
+
+configuration "application" {
+	targetType "executable"
+	targetName "BoxHub"
+	mainSourceFile "src/main.d"
+}
