@@ -6,5 +6,7 @@ auto getBoxProviders() {
 
 	IBoxProvider[] providers;
 
+	providers ~= new DistroBox();
+
 	return providers;
 };

@@ -1,8 +1,8 @@
 module BoxProviders.IBoxProvider;
 
 interface IBoxProvider {
-	import BoxProviders.Box;
+	import BoxProviders.DBox;
 
-	Box[] ListBoxes();
+	DBox[] ListBoxes();
 }
 

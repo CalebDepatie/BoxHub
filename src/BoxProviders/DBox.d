@@ -1,6 +1,6 @@
-module BoxProviders.Box;
+module BoxProviders.DBox;
 
-struct Box {
+struct DBox {
 	string ID;
 	string Image;
 	string Status;
