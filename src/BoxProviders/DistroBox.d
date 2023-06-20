@@ -4,6 +4,7 @@ import BoxProviders.IBoxProvider;
 
 class DistroBox : IBoxProvider {
 	import BoxProviders.DBox;
+	import std.process: Pid;
 
 	private static string CmdPath = "~/.local/bin/distrobox ";
 	
@@ -34,5 +35,16 @@ class DistroBox : IBoxProvider {
 		}
 
 		return boxes;
+	}
+
+	Pid enter(inout DBox b) {
+		import std.process: spawnShell;
+		import std.process: Config;
+
+		immutable string termName = "kitty --title " ~ b.Name ~ " -d $HOME";
+
+		auto pid = spawnShell(termName ~ " " ~ CmdPath ~ "enter " ~ b.Name ~ " && cd ~/");//, null, Config.none, "/home");
+		
+		return pid;
 	}
 } 

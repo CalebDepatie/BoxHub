@@ -4,6 +4,7 @@ import BoxProviders: IBoxProvider, DistroBox, getBoxProviders, DBox;
 import gtk.Frame;
 import gtk.Box;
 import gtk.Label;
+import gtk.Button;
 
 auto createBoxes() {
 	import gtk.Label;
@@ -15,10 +16,10 @@ auto createBoxes() {
 }
 
 class BoxManager : Box {
-	import gtk.Button;
+	import gtk.Widget;
 
 	IBoxProvider[] Providers;
-	DBox[] boxes;
+	BoxListItem[] boxes;
 	
 	this(IBoxProvider[] providers) {
 		super(GtkOrientation.VERTICAL, 10);
@@ -38,8 +39,8 @@ class BoxManager : Box {
 		hbox.packEnd(refreshButton, false, false, 0);
 		packStart(hbox, false, false, 0);
 
-		foreach(b; boxes) {
-			packStart(new BoxListItem(b), false, false, 0);
+		foreach (b; boxes) {
+			packStart(b, false, false, 0);
 		}
 	}
 
@@ -47,21 +48,26 @@ class BoxManager : Box {
 		import std.array: join;
 
 		this.boxes = [];
-		foreach(prov; Providers) {
-			this.boxes = join([boxes, prov.ListBoxes()]);
+		foreach (prov; Providers) {
+			foreach (dbox; prov.ListBoxes()) {
+				this.boxes ~= new BoxListItem(dbox, prov);
+			}
 		}
 	}
-
 }
 
 
 class BoxListItem : Frame {
+	import BoxProviders: IBoxProvider;
+
 	const DBox self;
+	IBoxProvider Provider;
 	
-	this(const DBox b) {
+	this(const DBox b, ref IBoxProvider p) {
 		super(b.Name);
 
 		self = b;
+		Provider = p;
 
 		render();
 	}
@@ -78,6 +84,16 @@ class BoxListItem : Frame {
 		hbox.packStart(new Separator(GtkOrientation.HORIZONTAL), false, false, 5);
 		hbox.packStart(new Label("Status: " ~ self.Status), false, false, 5);
 
+		auto BoxButton = new Button("enter", GtkIconSize.BUTTON);
+		BoxButton.addOnClicked(&enterShell);
+
+		hbox.packEnd(BoxButton, false, false, 5);
+
 		add(hbox);
+	}
+
+	void enterShell(Button b) {
+		Provider.enter(self);
+		// disregard Pid
 	}
 }
