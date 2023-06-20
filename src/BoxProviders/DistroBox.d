@@ -50,7 +50,7 @@ class DistroBox : IBoxProvider {
 	void remove(in DBox b) {
 		import std.process: executeShell;
 
-		executeShell(CmdPath ~ "rm " ~ b.Name);
+		executeShell(CmdPath ~ "rm -f " ~ b.Name);
 	}
 
 	bool create(in string Name, in string Image) {
