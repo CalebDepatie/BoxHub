@@ -5,6 +5,8 @@ interface IBoxProvider {
 	import std.process: Pid;
 
 	DBox[] ListBoxes();
-	Pid enter(inout DBox b);
+	Pid enter(in DBox b);
+	void remove(in DBox b);
+	bool create(in string Name, in string Image);
 }
 

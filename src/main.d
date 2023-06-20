@@ -27,6 +27,7 @@ void main(string[] args) {
     box.packStart(stack, true, true, 0);
 
     win.add(box);
+    win.setIconName("package-x-generic-symbolic");
     // win.add(stack);
 
     win.showAll();

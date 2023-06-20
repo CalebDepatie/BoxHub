@@ -37,14 +37,27 @@ class DistroBox : IBoxProvider {
 		return boxes;
 	}
 
-	Pid enter(inout DBox b) {
+	Pid enter(in DBox b) {
 		import std.process: spawnShell;
-		import std.process: Config;
 
 		immutable string termName = "kitty --title " ~ b.Name ~ " -d $HOME";
 
-		auto pid = spawnShell(termName ~ " " ~ CmdPath ~ "enter " ~ b.Name ~ " && cd ~/");//, null, Config.none, "/home");
+		auto pid = spawnShell(termName ~ " " ~ CmdPath ~ "enter " ~ b.Name ~ " && cd ~/");
 		
 		return pid;
+	}
+
+	void remove(in DBox b) {
+		import std.process: executeShell;
+
+		executeShell(CmdPath ~ "rm " ~ b.Name);
+	}
+
+	bool create(in string Name, in string Image) {
+		import std.process: executeShell;
+
+		executeShell(CmdPath ~ "create -Y -n " ~ Name ~ " -i " ~ Image);
+
+		return true;
 	}
 } 
